@@ -61,3 +61,69 @@ Key interview point: What happens when join columns have NULLs.
   * De-duplicating
   * Top-N per group
   * Pagination
+
+---
+
+# 🔥 TRIGGERS (Interview Points)
+
+### **What is a trigger?**
+
+A database object that automatically executes **before or after** an INSERT, UPDATE, or DELETE operation.
+
+### **Why do we use triggers?**
+
+* Enforce business rules
+* Automatically maintain audit logs
+* Validate or transform data before saving
+
+### **When NOT to use triggers?**
+
+* When logic becomes too hidden or hard to debug
+* When same logic can be done in application layer
+* When performance is critical (triggers slow writes)
+
+### **Example you can explain verbally:**
+
+*"When an employee’s salary changes, a trigger can insert a row into a salary_history table to track the change."*
+
+---
+
+# 🔥 ASSERTIONS (Interview Points)
+
+> Note: Assertions are part of SQL standard but **not supported by MySQL**, which uses CHECK constraints instead.
+
+### **What is an assertion?**
+
+A condition that must always be true in the database.
+
+### **Example (SQL standard):**
+
+```sql
+CREATE ASSERTION emp_salary_check
+CHECK (
+    NOT EXISTS (
+        SELECT *
+        FROM employees
+        WHERE salary < 0
+    )
+);
+```
+
+### **Why assertions matter conceptually?**
+
+* They enforce **global integrity rules** across multiple tables.
+* They are like **database-level business validation rules**.
+
+### **MySQL equivalent?**
+
+* Use **CHECK constraints**, **triggers**, or application logic.
+* Example:
+
+```sql
+ALTER TABLE employees 
+ADD CONSTRAINT salary_check CHECK (salary >= 0);
+```
+
+### **How to answer in an interview:**
+
+*"MySQL doesn't support assertions, so we use CHECK constraints or triggers to enforce cross-table or complex business rules."*
